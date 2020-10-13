@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-home',
@@ -10,10 +12,10 @@ export class HomeComponent implements OnInit {
 
   registerMode = false;
   users: any;
-  constructor() { }
+  constructor(private title: Title){}
 
   ngOnInit(): void {
-  
+    this.title.setTitle('Home page');
   }
   registerToggle() {
 

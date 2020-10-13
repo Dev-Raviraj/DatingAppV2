@@ -8,18 +8,19 @@ import { User } from '../_models/user';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AccountService {
   baseUrl = environment.apiUrl;
   private CurrentUserSource = new ReplaySubject<User>(1);
   CurrenUser$ = this.CurrentUserSource.asObservable();
   constructor(private http: HttpClient) { }
+
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.CurrentUserSource.next(user);
+          this.setCurrentUser(user);
         }
 
       })
@@ -30,14 +31,15 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.CurrentUserSource.next(user);
+         
+          this.setCurrentUser(user);
         }
       })
     )
   }
 
   setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.CurrentUserSource.next(user);
   }
 
